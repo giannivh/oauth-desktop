@@ -1,0 +1,73 @@
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+
+task javadocJar(type: Jar) {
+    archiveClassifier.set('javadoc')
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    archiveClassifier.set('sources')
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+group = PUBLISH_GROUP_ID
+version = PUBLISH_VERSION
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                groupId PUBLISH_GROUP_ID
+                artifactId PUBLISH_ARTIFACT_ID
+                version PUBLISH_VERSION
+                
+                if (project.plugins.findPlugin("com.android.library")) {
+                    from components.release
+                } else {
+                    from components.java
+                }
+
+                artifact sourcesJar
+                artifact javadocJar
+
+                pom {
+                    name = PUBLISH_ARTIFACT_ID
+                    description = 'Open source OAuth2 desktop library for Java'
+                    url = 'https://github.com/giannivh/oauth-desktop'
+                    licenses {
+                        license {
+                            name = 'MIT License'
+                            url = 'https://github.com/giannivh/oauth-desktop/blob/master/LICENSE'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = 'gvhoecke'
+                            name = 'Gianni Van Hoecke'
+                            email = 'gianni@giannivanhoecke.com'
+                        }
+                    }
+                    scm {
+                        connection = 'scm:git:github.com/giannivh/oauth-desktop.git'
+                        developerConnection = 'scm:git:ssh://github.com/giannivh/oauth-desktop.git'
+                        url = 'https://github.com/giannivh/oauth-desktop/tree/master'
+                    }
+                }
+            }
+        }
+    }
+}
+
+signing {
+    useInMemoryPgpKeys(
+            rootProject.ext["signing.keyId"],
+            rootProject.ext["signing.key"],
+            rootProject.ext["signing.password"],
+    )
+    sign publishing.publications
+}

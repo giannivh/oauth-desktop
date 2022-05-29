@@ -4,3 +4,6 @@ out/
 
 # Gradle
 .gradle/
+
+# Publishing
+local.properties

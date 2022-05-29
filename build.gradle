@@ -1,5 +1,6 @@
 plugins {
-    id 'java'
+    id "java"
+    id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
 }
 
 group "com.giannivanhoecke.oauth"
@@ -14,7 +15,6 @@ repositories {
 }
 
 dependencies {
-
     implementation "org.apache.commons:commons-lang3:${commonsLang3Version}"
     implementation "commons-codec:commons-codec:${commonsCodecVersion}"
     implementation "com.google.code.gson:gson:${gsonVersion}"
@@ -29,3 +29,12 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+ext {
+    PUBLISH_GROUP_ID = "com.giannivanhoecke.oauth"
+    PUBLISH_ARTIFACT_ID = "oauth-desktop"
+    PUBLISH_VERSION = "${version}"
+}
+
+apply from: "${rootDir}/gradle/publish-root.gradle"
+apply from: "${rootProject.projectDir}/gradle/publish-module.gradle"
