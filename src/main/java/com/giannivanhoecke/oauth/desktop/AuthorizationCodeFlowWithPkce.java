@@ -240,7 +240,7 @@ public class AuthorizationCodeFlowWithPkce {
 
     private void assertValidUserInfoResponse(GetResult getResult) {
         if (getResult == null) {
-            throw new TokenException("Something went wrong while getting user info");
+            throw new UserInfoException("Something went wrong while getting user info");
         }
         if (getResult.getResultCode() != HttpStatusCode.OK) {
             throw new UserInfoException("Unauthorized: " + getResult);
