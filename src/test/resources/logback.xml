@@ -1,0 +1,17 @@
+<configuration scan="true">
+
+    <statusListener class="ch.qos.logback.core.status.NopStatusListener" />
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d %level [%c{0}] \(%thread\) %msg %replace([%X]){'\[\]', ''} %xEx%n</Pattern>
+        </layout>
+    </appender>
+    
+    <logger name="com.giannivanhoecke.oauth.desktop" level="DEBUG" />
+
+    <root level="DEBUG">
+        <appender-ref ref="STDOUT" />
+    </root>
+
+</configuration>
