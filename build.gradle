@@ -1,0 +1,31 @@
+plugins {
+    id 'java'
+}
+
+group "com.giannivanhoecke.oauth"
+archivesBaseName = "oauth-desktop"
+version "${version}"
+
+sourceCompatibility = 11
+targetCompatibility = 11
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    implementation "org.apache.commons:commons-lang3:${commonsLang3Version}"
+    implementation "commons-codec:commons-codec:${commonsCodecVersion}"
+    implementation "com.google.code.gson:gson:${gsonVersion}"
+    implementation "org.slf4j:slf4j-api:${slf4jVersion}"
+
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${jUnitVersion}"
+    testRuntimeOnly    "org.junit.jupiter:junit-jupiter-engine:${jUnitVersion}"
+    testImplementation "org.hamcrest:hamcrest:${hamcrestVersion}"
+    testImplementation "ch.qos.logback:logback-classic:${logbackVersion}"
+}
+
+test {
+    useJUnitPlatform()
+}
