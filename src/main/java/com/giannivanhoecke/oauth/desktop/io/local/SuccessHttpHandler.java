@@ -5,13 +5,13 @@ import com.giannivanhoecke.oauth.desktop.io.HttpStatusCode;
 import com.giannivanhoecke.oauth.desktop.representation.internal.AuthorizationCodeResponse;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Optional;
 
 /**
@@ -22,6 +22,8 @@ public class SuccessHttpHandler implements HttpHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SuccessHttpHandler.class);
 
+    private static final String SUCCESS_PAGE_LOCATION = "/success.html";
+    
     private final CallbackServerConfig callbackServerConfig;
 
     public SuccessHttpHandler(CallbackServerConfig callbackServerConfig) {
@@ -65,13 +67,48 @@ public class SuccessHttpHandler implements HttpHandler {
 
     private String getSuccessHtml() {
         try {
-            return Files.readString(Paths.get(SuccessHttpHandler.class.getResource("/success.html").toURI()));
+            Optional<Module> module = getCurrentModule();
+            if (module.isPresent()) {
+                return returnSuccessHtmlFromModule(module.get());
+            } else {
+                return returnSuccessHtmlFromClass();
+            }
         } catch (Exception e) {
-            LOGGER.error("Cannot read success.html from resources", e);
-            return "<html><body>"
-                    + "<h1>Login Successful</h1>"
-                    + "<p>You may close this browser window and go back to your application.</p>"
-                    + "</body></html>";
+            LOGGER.error(String.format("Cannot read '%s' from resources", SUCCESS_PAGE_LOCATION), e);
         }
+        return returnDefaultSuccessHtml();
+    }
+    
+    private Optional<Module> getCurrentModule() {
+        Module module = SuccessHttpHandler.class.getModule();
+        if (module == null || StringUtils.isBlank(module.getName())) {
+            return Optional.empty();
+        }
+        return Optional.of(module);
+    }
+
+    private String returnSuccessHtmlFromModule(Module module)
+            throws IOException {
+        try (InputStream stream = module.getResourceAsStream(SUCCESS_PAGE_LOCATION)) {
+            return new String(stream.readAllBytes());
+        }
+    }
+
+    private String returnSuccessHtmlFromClass()
+            throws IOException {
+        try (InputStream stream = SuccessHttpHandler.class.getResourceAsStream(SUCCESS_PAGE_LOCATION)) {
+            if (stream != null) {
+                return new String(stream.readAllBytes());
+            } else {
+                throw new IOException(String.format("Resource '%s' not found!", SUCCESS_PAGE_LOCATION));
+            }
+        }
+    }
+
+    private String returnDefaultSuccessHtml() {
+        return "<html><body>"
+                + "<h1>Login Successful</h1>"
+                + "<p>You may close this browser window and go back to your application.</p>"
+                + "</body></html>";
     }
 }
