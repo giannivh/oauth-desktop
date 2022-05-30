@@ -16,8 +16,8 @@ to `/delegated` but that endpoint got removed in version 16. They didn't update 
 after successfully logging in. That caused confusion.
 
 Also, we had to hack modularity in the Keycloak Installed adapter, as it is not modular. Next to that, the adapter 
-pulled in a lot of heavy dependencies like Undertow, JBoss RESTEasy, and whatnot. It also relied on Java EE, which has been deprecated 
-since Java 9. Generating a jlink image was a pain.
+pulled in a lot of heavy dependencies like Undertow, JBoss RESTEasy, and whatnot. It also relied on Java EE, which has 
+been deprecated since Java 9. Generating a jlink image was a pain.
 
 We had to replace the Keycloak Installed adapter with something else, but what was available to use was either 
 discontinued, not modular, or bloatware pulling in a lot of dependencies.
@@ -87,12 +87,18 @@ AuthorizationServerConfig config = AuthorizationServerConfig
         .withEndpointToken("/token")
         .withClientId("myclient")
         .withAuthScope("openid offline_access email profile")
+        // either redirect to your own URI ...
         .withSuccessRedirectUri("http://localhost/success.html")
+        // ... or automatically close the browser tab
+        .withCloseBrowserTabOnSuccess(true)
         .build();
 ```
 
-The optional `.withSuccessRedirectUri("http://localhost/success.html")` will redirect to your page of choice instead of showing
-the built-in HTML success page.
+The optional `.withSuccessRedirectUri("http://localhost/success.html")` will redirect to your page of choice instead of 
+showing the built-in HTML success page.
+
+The optional `.withCloseBrowserTabOnSuccess(true)` will automatically close the browser tab instead of showing the
+built-in HTML success page. Please note: this property takes precedence over your own success redirect URI.
      
 ### Instantiate
 
@@ -102,7 +108,8 @@ Next, instantiate using the system's default browser:
 authorizationCodeFlowWithPkce = new AuthorizationCodeFlowWithPkce(config);
 ```
 
-Alternatively, you can supply your own `Browser` implementation, if the native Java `Desktop` isn't suitable for your use case:
+Alternatively, you can supply your own `Browser` implementation, if the native Java `Desktop` isn't suitable for your 
+use case:
 
 ```java
 authorizationCodeFlowWithPkce = new AuthorizationCodeFlowWithPkce(config, this::open);
@@ -121,7 +128,8 @@ LOGGER.info("  -> access token:  " + accessTokenResponse.getAccessToken());
 LOGGER.info("  -> refresh token: " + accessTokenResponse.getRefreshToken());
 ```
 
-You will get a `Future<AccessTokenResponse>` instance, as we need to wait on an external action (the user authorizing in the browser).
+You will get a `Future<AccessTokenResponse>` instance, as we need to wait on an external action 
+(the user authorizing in the browser).
 
 ### Exchange refresh token
            

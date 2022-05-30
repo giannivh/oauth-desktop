@@ -21,12 +21,14 @@ public class AuthorizationServerConfigTest {
     private static final String DEFAULT_ENDPOINT_USER_INFO = "/userinfo";
     private static final String DEFAULT_ENDPOINT_TOKEN     = "/token";
     private static final String DEFAULT_AUTH_SCOPE         = "openid offline_access email profile";
+    private static final boolean DEFAULT_CLOSE_BROWSER_TAB = false;
 
     private static final String CUSTOM_ENDPOINT_AUTH        = "/custom/auth";
     private static final String CUSTOM_ENDPOINT_USER_INFO   = "/custom/userinfo";
     private static final String CUSTOM_ENDPOINT_TOKEN       = "/custom/token";
     private static final String CUSTOM_AUTH_SCOPE           = "offline_access openid";
     private static final String CUSTOM_SUCCESS_REDIRECT_URI = "http://localhost/success.html";
+    private static final boolean CUSTOM_CLOSE_BROWSER_TAB   = true;
 
     @Test
     public void builderWithDefaultProperties() {
@@ -49,6 +51,7 @@ public class AuthorizationServerConfigTest {
         assertThat(config.getClientId(), is(equalTo(CLIENT_ID)));
         assertThat(config.getAuthScope(), is(equalTo(DEFAULT_AUTH_SCOPE)));
         assertThat(config.getSuccessRedirectUri(), is(equalTo(null)));
+        assertThat(config.isCloseBrowserTabOnSuccess(), is(DEFAULT_CLOSE_BROWSER_TAB));
     }
 
     @Test
@@ -68,6 +71,7 @@ public class AuthorizationServerConfigTest {
                 .withEndpointToken(CUSTOM_ENDPOINT_TOKEN)
                 .withAuthScope(CUSTOM_AUTH_SCOPE)
                 .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI)
+                .withCloseBrowserTabOnSuccess(CUSTOM_CLOSE_BROWSER_TAB)
                 .build();
 
         // then
@@ -77,6 +81,7 @@ public class AuthorizationServerConfigTest {
         assertThat(config.getClientId(), is(equalTo(CLIENT_ID)));
         assertThat(config.getAuthScope(), is(equalTo(CUSTOM_AUTH_SCOPE)));
         assertThat(config.getSuccessRedirectUri(), is(equalTo(CUSTOM_SUCCESS_REDIRECT_URI)));
+        assertThat(config.isCloseBrowserTabOnSuccess(), is(CUSTOM_CLOSE_BROWSER_TAB));
     }
 
     @Test
@@ -91,6 +96,7 @@ public class AuthorizationServerConfigTest {
                 .withEndpointToken(CUSTOM_ENDPOINT_TOKEN)
                 .withAuthScope(CUSTOM_AUTH_SCOPE)
                 .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI)
+                .withCloseBrowserTabOnSuccess(DEFAULT_CLOSE_BROWSER_TAB)
                 .build();
         AuthorizationServerConfig otherConfig = AuthorizationServerConfig
                 .newBuilder()
@@ -101,6 +107,7 @@ public class AuthorizationServerConfigTest {
                 .withEndpointToken(CUSTOM_ENDPOINT_TOKEN)
                 .withAuthScope(CUSTOM_AUTH_SCOPE)
                 .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI)
+                .withCloseBrowserTabOnSuccess(DEFAULT_CLOSE_BROWSER_TAB)
                 .build();
 
         // when
@@ -124,6 +131,7 @@ public class AuthorizationServerConfigTest {
                 .withEndpointToken(CUSTOM_ENDPOINT_TOKEN)
                 .withAuthScope(CUSTOM_AUTH_SCOPE)
                 .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI)
+                .withCloseBrowserTabOnSuccess(DEFAULT_CLOSE_BROWSER_TAB)
                 .build();
         AuthorizationServerConfig otherConfig = AuthorizationServerConfig
                 .newBuilder()
@@ -134,6 +142,7 @@ public class AuthorizationServerConfigTest {
                 .withEndpointToken(CUSTOM_ENDPOINT_TOKEN)
                 .withAuthScope(CUSTOM_AUTH_SCOPE)
                 .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI)
+                .withCloseBrowserTabOnSuccess(DEFAULT_CLOSE_BROWSER_TAB)
                 .build();
 
         // when
@@ -157,6 +166,7 @@ public class AuthorizationServerConfigTest {
                 .withEndpointToken(CUSTOM_ENDPOINT_TOKEN)
                 .withAuthScope(CUSTOM_AUTH_SCOPE)
                 .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI)
+                .withCloseBrowserTabOnSuccess(DEFAULT_CLOSE_BROWSER_TAB)
                 .build();
         AuthorizationServerConfig otherConfig = AuthorizationServerConfig
                 .newBuilder()
@@ -167,6 +177,7 @@ public class AuthorizationServerConfigTest {
                 .withEndpointToken(CUSTOM_ENDPOINT_TOKEN)
                 .withAuthScope(CUSTOM_AUTH_SCOPE)
                 .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI)
+                .withCloseBrowserTabOnSuccess(DEFAULT_CLOSE_BROWSER_TAB)
                 .build();
 
         // when
@@ -190,6 +201,7 @@ public class AuthorizationServerConfigTest {
                 .withEndpointToken(CUSTOM_ENDPOINT_TOKEN)
                 .withAuthScope(CUSTOM_AUTH_SCOPE)
                 .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI)
+                .withCloseBrowserTabOnSuccess(DEFAULT_CLOSE_BROWSER_TAB)
                 .build();
         AuthorizationServerConfig otherConfig = AuthorizationServerConfig
                 .newBuilder()
@@ -200,6 +212,7 @@ public class AuthorizationServerConfigTest {
                 .withEndpointToken(CUSTOM_ENDPOINT_TOKEN)
                 .withAuthScope(CUSTOM_AUTH_SCOPE)
                 .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI)
+                .withCloseBrowserTabOnSuccess(DEFAULT_CLOSE_BROWSER_TAB)
                 .build();
 
         // when
@@ -223,6 +236,7 @@ public class AuthorizationServerConfigTest {
                 .withEndpointToken(CUSTOM_ENDPOINT_TOKEN)
                 .withAuthScope(CUSTOM_AUTH_SCOPE)
                 .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI)
+                .withCloseBrowserTabOnSuccess(DEFAULT_CLOSE_BROWSER_TAB)
                 .build();
         AuthorizationServerConfig otherConfig = AuthorizationServerConfig
                 .newBuilder()
@@ -233,6 +247,7 @@ public class AuthorizationServerConfigTest {
                 .withEndpointToken(CUSTOM_ENDPOINT_TOKEN)
                 .withAuthScope(CUSTOM_AUTH_SCOPE)
                 .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI)
+                .withCloseBrowserTabOnSuccess(DEFAULT_CLOSE_BROWSER_TAB)
                 .build();
 
         // when
@@ -256,6 +271,7 @@ public class AuthorizationServerConfigTest {
                 .withEndpointToken(CUSTOM_ENDPOINT_TOKEN)
                 .withAuthScope(CUSTOM_AUTH_SCOPE)
                 .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI)
+                .withCloseBrowserTabOnSuccess(DEFAULT_CLOSE_BROWSER_TAB)
                 .build();
         AuthorizationServerConfig otherConfig = AuthorizationServerConfig
                 .newBuilder()
@@ -266,6 +282,7 @@ public class AuthorizationServerConfigTest {
                 .withEndpointToken("other-endpoint-token")
                 .withAuthScope(CUSTOM_AUTH_SCOPE)
                 .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI)
+                .withCloseBrowserTabOnSuccess(DEFAULT_CLOSE_BROWSER_TAB)
                 .build();
 
         // when
@@ -289,6 +306,7 @@ public class AuthorizationServerConfigTest {
                 .withEndpointToken(CUSTOM_ENDPOINT_TOKEN)
                 .withAuthScope(CUSTOM_AUTH_SCOPE)
                 .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI)
+                .withCloseBrowserTabOnSuccess(DEFAULT_CLOSE_BROWSER_TAB)
                 .build();
         AuthorizationServerConfig otherConfig = AuthorizationServerConfig
                 .newBuilder()
@@ -299,6 +317,7 @@ public class AuthorizationServerConfigTest {
                 .withEndpointToken(CUSTOM_ENDPOINT_TOKEN)
                 .withAuthScope("other-auth-scope")
                 .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI)
+                .withCloseBrowserTabOnSuccess(DEFAULT_CLOSE_BROWSER_TAB)
                 .build();
 
         // when
@@ -322,6 +341,7 @@ public class AuthorizationServerConfigTest {
                 .withEndpointToken(CUSTOM_ENDPOINT_TOKEN)
                 .withAuthScope(CUSTOM_AUTH_SCOPE)
                 .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI)
+                .withCloseBrowserTabOnSuccess(DEFAULT_CLOSE_BROWSER_TAB)
                 .build();
         AuthorizationServerConfig otherConfig = AuthorizationServerConfig
                 .newBuilder()
@@ -332,6 +352,42 @@ public class AuthorizationServerConfigTest {
                 .withEndpointToken(CUSTOM_ENDPOINT_TOKEN)
                 .withAuthScope(CUSTOM_AUTH_SCOPE)
                 .withSuccessRedirectUri("other-success-redirect-uri")
+                .withCloseBrowserTabOnSuccess(DEFAULT_CLOSE_BROWSER_TAB)
+                .build();
+
+        // when
+        boolean equalsThis = thisConfig.equals(otherConfig);
+        boolean equalsOther = otherConfig.equals(thisConfig);
+
+        // then
+        assertThat(equalsThis, is(false));
+        assertThat(equalsOther, is(false));
+    }
+
+    @Test
+    public void equalsFalseCloseBrowserTabOnSuccess() {
+        // given
+        AuthorizationServerConfig thisConfig = AuthorizationServerConfig
+                .newBuilder()
+                .withBaseUrl(BASE_URL)
+                .withClientId(CLIENT_ID)
+                .withEndpointAuth(CUSTOM_ENDPOINT_AUTH)
+                .withEndpointUserInfo(CUSTOM_ENDPOINT_USER_INFO)
+                .withEndpointToken(CUSTOM_ENDPOINT_TOKEN)
+                .withAuthScope(CUSTOM_AUTH_SCOPE)
+                .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI)
+                .withCloseBrowserTabOnSuccess(DEFAULT_CLOSE_BROWSER_TAB)
+                .build();
+        AuthorizationServerConfig otherConfig = AuthorizationServerConfig
+                .newBuilder()
+                .withBaseUrl(BASE_URL)
+                .withClientId(CLIENT_ID)
+                .withEndpointAuth(CUSTOM_ENDPOINT_AUTH)
+                .withEndpointUserInfo(CUSTOM_ENDPOINT_USER_INFO)
+                .withEndpointToken(CUSTOM_ENDPOINT_TOKEN)
+                .withAuthScope(CUSTOM_AUTH_SCOPE)
+                .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI)
+                .withCloseBrowserTabOnSuccess(CUSTOM_CLOSE_BROWSER_TAB)
                 .build();
 
         // when
@@ -355,6 +411,7 @@ public class AuthorizationServerConfigTest {
                 .withEndpointToken(CUSTOM_ENDPOINT_TOKEN)
                 .withAuthScope(CUSTOM_AUTH_SCOPE)
                 .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI)
+                .withCloseBrowserTabOnSuccess(DEFAULT_CLOSE_BROWSER_TAB)
                 .build();
         AuthorizationServerConfig otherConfig = AuthorizationServerConfig
                 .newBuilder()
@@ -365,6 +422,7 @@ public class AuthorizationServerConfigTest {
                 .withEndpointToken(CUSTOM_ENDPOINT_TOKEN)
                 .withAuthScope(CUSTOM_AUTH_SCOPE)
                 .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI)
+                .withCloseBrowserTabOnSuccess(DEFAULT_CLOSE_BROWSER_TAB)
                 .build();
 
         // when
@@ -386,7 +444,8 @@ public class AuthorizationServerConfigTest {
                 .withEndpointUserInfo(CUSTOM_ENDPOINT_USER_INFO)
                 .withEndpointToken(CUSTOM_ENDPOINT_TOKEN)
                 .withAuthScope(CUSTOM_AUTH_SCOPE)
-                .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI);
+                .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI)
+                .withCloseBrowserTabOnSuccess(DEFAULT_CLOSE_BROWSER_TAB);
 
         // expect when
         MissingConfigException missingConfigException = assertThrows(MissingConfigException.class, builder::build);
@@ -406,7 +465,8 @@ public class AuthorizationServerConfigTest {
                 .withEndpointUserInfo(CUSTOM_ENDPOINT_USER_INFO)
                 .withEndpointToken(CUSTOM_ENDPOINT_TOKEN)
                 .withAuthScope(CUSTOM_AUTH_SCOPE)
-                .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI);
+                .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI)
+                .withCloseBrowserTabOnSuccess(DEFAULT_CLOSE_BROWSER_TAB);
 
         // expect when
         MissingConfigException missingConfigException = assertThrows(MissingConfigException.class, builder::build);
@@ -426,7 +486,8 @@ public class AuthorizationServerConfigTest {
                 .withEndpointUserInfo(CUSTOM_ENDPOINT_USER_INFO)
                 .withEndpointToken(CUSTOM_ENDPOINT_TOKEN)
                 .withAuthScope(CUSTOM_AUTH_SCOPE)
-                .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI);
+                .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI)
+                .withCloseBrowserTabOnSuccess(DEFAULT_CLOSE_BROWSER_TAB);
 
         // expect when
         MissingConfigException missingConfigException = assertThrows(MissingConfigException.class, builder::build);
@@ -446,7 +507,8 @@ public class AuthorizationServerConfigTest {
                 .withEndpointUserInfo(CUSTOM_ENDPOINT_USER_INFO)
                 .withEndpointToken(CUSTOM_ENDPOINT_TOKEN)
                 .withAuthScope(CUSTOM_AUTH_SCOPE)
-                .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI);
+                .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI)
+                .withCloseBrowserTabOnSuccess(DEFAULT_CLOSE_BROWSER_TAB);
 
         // expect when
         MissingConfigException missingConfigException = assertThrows(MissingConfigException.class, builder::build);
@@ -466,7 +528,8 @@ public class AuthorizationServerConfigTest {
                 .withEndpointUserInfo(CUSTOM_ENDPOINT_USER_INFO)
                 .withEndpointToken(CUSTOM_ENDPOINT_TOKEN)
                 .withAuthScope(CUSTOM_AUTH_SCOPE)
-                .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI);
+                .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI)
+                .withCloseBrowserTabOnSuccess(DEFAULT_CLOSE_BROWSER_TAB);
 
         // expect when
         MissingConfigException missingConfigException = assertThrows(MissingConfigException.class, builder::build);
@@ -486,7 +549,8 @@ public class AuthorizationServerConfigTest {
                 .withEndpointUserInfo(CUSTOM_ENDPOINT_USER_INFO)
                 .withEndpointToken(CUSTOM_ENDPOINT_TOKEN)
                 .withAuthScope(CUSTOM_AUTH_SCOPE)
-                .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI);
+                .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI)
+                .withCloseBrowserTabOnSuccess(DEFAULT_CLOSE_BROWSER_TAB);
 
         // expect when
         MissingConfigException missingConfigException = assertThrows(MissingConfigException.class, builder::build);
@@ -506,7 +570,8 @@ public class AuthorizationServerConfigTest {
                 .withEndpointUserInfo(null)
                 .withEndpointToken(CUSTOM_ENDPOINT_TOKEN)
                 .withAuthScope(CUSTOM_AUTH_SCOPE)
-                .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI);
+                .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI)
+                .withCloseBrowserTabOnSuccess(DEFAULT_CLOSE_BROWSER_TAB);
 
         // expect when
         MissingConfigException missingConfigException = assertThrows(MissingConfigException.class, builder::build);
@@ -526,7 +591,8 @@ public class AuthorizationServerConfigTest {
                 .withEndpointUserInfo("")
                 .withEndpointToken(CUSTOM_ENDPOINT_TOKEN)
                 .withAuthScope(CUSTOM_AUTH_SCOPE)
-                .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI);
+                .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI)
+                .withCloseBrowserTabOnSuccess(DEFAULT_CLOSE_BROWSER_TAB);
 
         // expect when
         MissingConfigException missingConfigException = assertThrows(MissingConfigException.class, builder::build);
@@ -546,7 +612,8 @@ public class AuthorizationServerConfigTest {
                 .withEndpointUserInfo(CUSTOM_ENDPOINT_USER_INFO)
                 .withEndpointToken(null)
                 .withAuthScope(CUSTOM_AUTH_SCOPE)
-                .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI);
+                .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI)
+                .withCloseBrowserTabOnSuccess(DEFAULT_CLOSE_BROWSER_TAB);
 
         // expect when
         MissingConfigException missingConfigException = assertThrows(MissingConfigException.class, builder::build);
@@ -566,7 +633,8 @@ public class AuthorizationServerConfigTest {
                 .withEndpointUserInfo(CUSTOM_ENDPOINT_USER_INFO)
                 .withEndpointToken("")
                 .withAuthScope(CUSTOM_AUTH_SCOPE)
-                .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI);
+                .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI)
+                .withCloseBrowserTabOnSuccess(DEFAULT_CLOSE_BROWSER_TAB);
 
         // expect when
         MissingConfigException missingConfigException = assertThrows(MissingConfigException.class, builder::build);
@@ -586,7 +654,8 @@ public class AuthorizationServerConfigTest {
                 .withEndpointUserInfo(CUSTOM_ENDPOINT_USER_INFO)
                 .withEndpointToken(CUSTOM_ENDPOINT_TOKEN)
                 .withAuthScope(null)
-                .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI);
+                .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI)
+                .withCloseBrowserTabOnSuccess(DEFAULT_CLOSE_BROWSER_TAB);
 
         // expect when
         MissingConfigException missingConfigException = assertThrows(MissingConfigException.class, builder::build);
@@ -606,7 +675,8 @@ public class AuthorizationServerConfigTest {
                 .withEndpointUserInfo(CUSTOM_ENDPOINT_USER_INFO)
                 .withEndpointToken(CUSTOM_ENDPOINT_TOKEN)
                 .withAuthScope("")
-                .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI);
+                .withSuccessRedirectUri(CUSTOM_SUCCESS_REDIRECT_URI)
+                .withCloseBrowserTabOnSuccess(DEFAULT_CLOSE_BROWSER_TAB);
 
         // expect when
         MissingConfigException missingConfigException = assertThrows(MissingConfigException.class, builder::build);

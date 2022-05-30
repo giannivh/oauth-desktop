@@ -23,6 +23,7 @@ public class AuthorizationServerConfig {
     private final String clientId;
     private final String authScope;
     private final String successRedirectUri;
+    private final boolean closeBrowserTabOnSuccess;
 
     private AuthorizationServerConfig(Builder builder) {
         baseUrl = builder.baseUrl;
@@ -32,6 +33,7 @@ public class AuthorizationServerConfig {
         clientId = builder.clientId;
         authScope = builder.authScope;
         successRedirectUri = builder.successRedirectUri;
+        closeBrowserTabOnSuccess = builder.closeBrowserTabOnSuccess;
     }
 
     public String getEndpointAuth() {
@@ -58,12 +60,16 @@ public class AuthorizationServerConfig {
         return successRedirectUri;
     }
 
+    public boolean isCloseBrowserTabOnSuccess() {
+        return closeBrowserTabOnSuccess;
+    }
+
     @Override
     public String toString() {
         return "AuthorizationServerConfig{" + "baseUrl='" + baseUrl + '\'' + ", endpointAuth='" + endpointAuth + '\'' +
                 ", endpointUserInfo='" + endpointUserInfo + '\'' + ", endpointToken='" + endpointToken + '\'' +
                 ", clientId='" + clientId + '\'' + ", authScope='" + authScope + '\'' + ", successRedirectUri='" +
-                successRedirectUri + '\'' + '}';
+                successRedirectUri + '\'' + ", closeBrowserTabOnSuccess=" + closeBrowserTabOnSuccess + '}';
     }
 
     @Override
@@ -75,7 +81,8 @@ public class AuthorizationServerConfig {
             return false;
         }
         AuthorizationServerConfig config = (AuthorizationServerConfig) o;
-        return Objects.equals(baseUrl, config.baseUrl) && Objects.equals(endpointAuth, config.endpointAuth) &&
+        return closeBrowserTabOnSuccess == config.closeBrowserTabOnSuccess && Objects.equals(baseUrl, config.baseUrl) &&
+                Objects.equals(endpointAuth, config.endpointAuth) &&
                 Objects.equals(endpointUserInfo, config.endpointUserInfo) &&
                 Objects.equals(endpointToken, config.endpointToken) && Objects.equals(clientId, config.clientId) &&
                 Objects.equals(authScope, config.authScope) &&
@@ -85,7 +92,7 @@ public class AuthorizationServerConfig {
     @Override
     public int hashCode() {
         return Objects.hash(baseUrl, endpointAuth, endpointUserInfo, endpointToken, clientId, authScope,
-                successRedirectUri);
+                successRedirectUri, closeBrowserTabOnSuccess);
     }
 
     public static Builder newBuilder() {
@@ -100,12 +107,14 @@ public class AuthorizationServerConfig {
         private String clientId;
         private String authScope;
         private String successRedirectUri;
+        private boolean closeBrowserTabOnSuccess;
 
         private Builder() {
             endpointAuth = DEFAULT_ENDPOINT_AUTH;
             endpointUserInfo = DEFAULT_ENDPOINT_USER_INFO;
             endpointToken = DEFAULT_ENDPOINT_TOKEN;
             authScope = DEFAULT_AUTH_SCOPE;
+            closeBrowserTabOnSuccess = false;
         }
 
         /**
@@ -181,12 +190,27 @@ public class AuthorizationServerConfig {
         /**
          * Optional redirect URI when authorization was successful.
          * Leave empty to use the built-in success page.
+         * If {@link #withCloseBrowserTabOnSuccess(boolean)} is set to true, this property is ignored.
          *
          * @param val the redirect URI to use
          * @return this builder for chaining
          */
         public Builder withSuccessRedirectUri(String val) {
             successRedirectUri = val;
+            return this;
+        }
+
+        /**
+         * When set to true, the browser tab for authorization will close automatically on success.
+         * Defaults to false.
+         * Note that this property has precedence over your own redirect URI set by
+         * {@link #withSuccessRedirectUri(String)}.
+         *
+         * @param val whether to close the browser tab on success or not
+         * @return this builder for chaining
+         */
+        public Builder withCloseBrowserTabOnSuccess(boolean val) {
+            closeBrowserTabOnSuccess = val;
             return this;
         }
 

@@ -15,6 +15,8 @@ public class CallbackServerConfigTest {
 
     private static final CallbackListener CALLBACK_LISTENER = authorizationCodeResponse -> {};
     private static final String SUCCESS_REDIRECT_URI        = "http://localhost/success.html";
+    private static final boolean NO_BROWSER_TAB_CLOSE       = false;
+    private static final boolean BROWSER_TAB_CLOSE          = true;
 
     @Test
     public void builderWithSuccessRedirectUri() {
@@ -30,6 +32,7 @@ public class CallbackServerConfigTest {
         assertThat(config.getSuccessRedirectUri(), is(not(equalTo(null))));
         assertThat(config.getSuccessRedirectUri().isPresent(), is(true));
         assertThat(config.getSuccessRedirectUri().get(), is(equalTo(SUCCESS_REDIRECT_URI)));
+        assertThat(config.isCloseBrowserTabOnSuccess(), is(NO_BROWSER_TAB_CLOSE));
     }
 
     @Test
@@ -45,6 +48,7 @@ public class CallbackServerConfigTest {
         assertThat(config.getCallbackListener(), is(equalTo(CALLBACK_LISTENER)));
         assertThat(config.getSuccessRedirectUri(), is(not(equalTo(null))));
         assertThat(config.getSuccessRedirectUri().isPresent(), is(false));
+        assertThat(config.isCloseBrowserTabOnSuccess(), is(NO_BROWSER_TAB_CLOSE));
     }
 
     @Test
@@ -82,6 +86,31 @@ public class CallbackServerConfigTest {
                 .newBuilder()
                 .withCallbackListener(CALLBACK_LISTENER)
                 .withSuccessRedirectUri(null)
+                .build();
+
+        // when
+        boolean equalsThis = thisConfig.equals(otherConfig);
+        boolean equalsOther = otherConfig.equals(thisConfig);
+
+        // then
+        assertThat(equalsThis, is(true));
+        assertThat(equalsOther, is(true));
+    }
+
+    @Test
+    public void equalsTrueWithCloseBrowserTabOnSuccess() {
+        // given
+        CallbackServerConfig thisConfig = CallbackServerConfig
+                .newBuilder()
+                .withCallbackListener(CALLBACK_LISTENER)
+                .withSuccessRedirectUri(SUCCESS_REDIRECT_URI)
+                .withCloseBrowserTabOnSuccess(BROWSER_TAB_CLOSE)
+                .build();
+        CallbackServerConfig otherConfig = CallbackServerConfig
+                .newBuilder()
+                .withCallbackListener(CALLBACK_LISTENER)
+                .withSuccessRedirectUri(SUCCESS_REDIRECT_URI)
+                .withCloseBrowserTabOnSuccess(BROWSER_TAB_CLOSE)
                 .build();
 
         // when
@@ -140,17 +169,44 @@ public class CallbackServerConfigTest {
     }
 
     @Test
+    public void equalsFalseCloseBrowserTabOnSuccess() {
+        // given
+        CallbackServerConfig thisConfig = CallbackServerConfig
+                .newBuilder()
+                .withCallbackListener(CALLBACK_LISTENER)
+                .withSuccessRedirectUri(SUCCESS_REDIRECT_URI)
+                .withCloseBrowserTabOnSuccess(NO_BROWSER_TAB_CLOSE)
+                .build();
+        CallbackServerConfig otherConfig = CallbackServerConfig
+                .newBuilder()
+                .withCallbackListener(CALLBACK_LISTENER)
+                .withSuccessRedirectUri(SUCCESS_REDIRECT_URI)
+                .withCloseBrowserTabOnSuccess(BROWSER_TAB_CLOSE)
+                .build();
+
+        // when
+        boolean equalsThis = thisConfig.equals(otherConfig);
+        boolean equalsOther = otherConfig.equals(thisConfig);
+
+        // then
+        assertThat(equalsThis, is(false));
+        assertThat(equalsOther, is(false));
+    }
+
+    @Test
     public void equalsHashCode() {
         // given
         CallbackServerConfig thisConfig = CallbackServerConfig
                 .newBuilder()
                 .withCallbackListener(CALLBACK_LISTENER)
                 .withSuccessRedirectUri(SUCCESS_REDIRECT_URI)
+                .withCloseBrowserTabOnSuccess(BROWSER_TAB_CLOSE)
                 .build();
         CallbackServerConfig otherConfig = CallbackServerConfig
                 .newBuilder()
                 .withCallbackListener(CALLBACK_LISTENER)
                 .withSuccessRedirectUri(SUCCESS_REDIRECT_URI)
+                .withCloseBrowserTabOnSuccess(BROWSER_TAB_CLOSE)
                 .build();
 
         // when

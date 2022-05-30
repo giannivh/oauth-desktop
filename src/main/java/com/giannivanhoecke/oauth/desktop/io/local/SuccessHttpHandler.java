@@ -23,6 +23,8 @@ public class SuccessHttpHandler implements HttpHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(SuccessHttpHandler.class);
 
     private static final String SUCCESS_PAGE_LOCATION = "/success.html";
+    private static final boolean WITH_AUTO_CLOSE      = true;
+    private static final boolean WITHOUT_AUTO_CLOSE   = false;
     
     private final CallbackServerConfig callbackServerConfig;
 
@@ -48,7 +50,10 @@ public class SuccessHttpHandler implements HttpHandler {
         Optional<String> successRedirectUri = this.callbackServerConfig.getSuccessRedirectUri();
         int htmlStatusCode;
         String htmlResponse;
-        if (successRedirectUri.isEmpty()) {
+        if (this.callbackServerConfig.isCloseBrowserTabOnSuccess()) {
+            htmlStatusCode = HttpStatusCode.OK;
+            htmlResponse = returnDefaultSuccessHtml(WITH_AUTO_CLOSE);
+        } else if (successRedirectUri.isEmpty()) {
             htmlStatusCode = HttpStatusCode.OK;
             htmlResponse = getSuccessHtml();
         } else {
@@ -106,9 +111,14 @@ public class SuccessHttpHandler implements HttpHandler {
     }
 
     private String returnDefaultSuccessHtml() {
+        return returnDefaultSuccessHtml(WITHOUT_AUTO_CLOSE);
+    }
+
+    private String returnDefaultSuccessHtml(boolean autoClose) {
         return "<html><body>"
                 + "<h1>Login Successful</h1>"
                 + "<p>You may close this browser window and go back to your application.</p>"
+                + (autoClose ? "<script>window.close();</script>" : "")
                 + "</body></html>";
     }
 }

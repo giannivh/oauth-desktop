@@ -71,6 +71,7 @@ public class AuthorizationCodeFlowWithPkce {
                 .newBuilder()
                 .withCallbackListener(this::callbackReceived)
                 .withSuccessRedirectUri(this.authorizationServerConfig.getSuccessRedirectUri())
+                .withCloseBrowserTabOnSuccess(this.authorizationServerConfig.isCloseBrowserTabOnSuccess())
                 .build());
     }
 
