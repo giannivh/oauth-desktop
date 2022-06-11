@@ -118,7 +118,7 @@ public class SuccessHttpHandler implements HttpHandler {
         return "<html><body>"
                 + "<h1>Login Successful</h1>"
                 + "<p>You may close this browser window and go back to your application.</p>"
-                + (autoClose ? "<script>window.close();</script>" : "")
+                + (autoClose ? "<script>open(location, '_self').close();</script>" : "")
                 + "</body></html>";
     }
 }
