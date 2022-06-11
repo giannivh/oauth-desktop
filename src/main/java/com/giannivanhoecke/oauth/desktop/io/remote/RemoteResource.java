@@ -71,7 +71,8 @@ public class RemoteResource {
                     .build()
                     .exec();
         } catch (Exception e) {
-            throw new ResourceException(requestParameters.getEndpoint(), "Can't send data", e);
+            throw new ResourceException(requestParameters.getEndpoint(),
+                    String.format("Can't send data: %s", e.getMessage()), e);
         } finally {
             clearMdc();
         }

@@ -209,7 +209,7 @@ public class AuthorizationCodeFlowWithPkce {
         try {
             return new RemoteResource().post(postRequest);
         } catch (ResourceException e) {
-            throw new TokenException("Cannot request tokens", e);
+            throw new TokenException(String.format("Cannot request tokens: %s", e.getMessage()), e);
         }
     }
 
@@ -218,7 +218,7 @@ public class AuthorizationCodeFlowWithPkce {
             throw new TokenException("Something went wrong while exchanging token");
         }
         if (postResult.getResultCode() != HttpStatusCode.OK) {
-            throw new TokenException("Unauthorized: " + postResult);
+            throw new TokenException(String.format("Unauthorized: %s", postResult));
         }
     }
 
@@ -226,7 +226,7 @@ public class AuthorizationCodeFlowWithPkce {
         try {
             return new Gson().fromJson(postResult.getContent(), AccessTokenResponse.class);
         } catch (Exception e) {
-            throw new TokenException("Cannot create AccessTokenResponse: " + postResult, e);
+            throw new TokenException(String.format("Cannot create AccessTokenResponse: %s", postResult), e);
         }
     }
 
@@ -234,7 +234,7 @@ public class AuthorizationCodeFlowWithPkce {
         try {
             return new RemoteResource().get(getRequest);
         } catch (ResourceException e) {
-            throw new UserInfoException("Cannot request user info", e);
+            throw new UserInfoException(String.format("Cannot request user info: %s", e.getMessage()), e);
         }
     }
 
@@ -243,7 +243,7 @@ public class AuthorizationCodeFlowWithPkce {
             throw new UserInfoException("Something went wrong while getting user info");
         }
         if (getResult.getResultCode() != HttpStatusCode.OK) {
-            throw new UserInfoException("Unauthorized: " + getResult);
+            throw new UserInfoException(String.format("Unauthorized: %s", getResult));
         }
     }
 
@@ -251,7 +251,7 @@ public class AuthorizationCodeFlowWithPkce {
         try {
             return new Gson().fromJson(getResult.getContent(), UserInfoResponse.class);
         } catch (Exception e) {
-            throw new UserInfoException("Cannot create UserInfoResponse: " + getResult, e);
+            throw new UserInfoException(String.format("Cannot create UserInfoResponse: %s", getResult), e);
         }
     }
     
