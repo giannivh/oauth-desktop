@@ -22,6 +22,7 @@ public class CallbackServer {
     private static final int RANDOM_AVAILABLE_PORT = 0;
     private static final int WITHOUT_REQUEST_QUEUEING = 0;
     private static final String ENDPOINT_SUCCESS = "/success";
+    private static final String ENDPOINT_REDIRECT = "/redirect";
     private static final int NO_DELAY = 0;
 
     private final CallbackServerConfig callbackServerConfig;
@@ -42,6 +43,7 @@ public class CallbackServer {
                 new InetSocketAddress(HOSTNAME, RANDOM_AVAILABLE_PORT),
                 WITHOUT_REQUEST_QUEUEING);
         this.server.createContext(ENDPOINT_SUCCESS, new SuccessHttpHandler(this.callbackServerConfig));
+        this.server.createContext(ENDPOINT_REDIRECT, new RedirectHttpHandler());
         this.scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         this.server.setExecutor(scheduledExecutorService);
         this.server.start();
@@ -57,9 +59,19 @@ public class CallbackServer {
     }
 
     public String getSuccessEndpoint() {
+        return getEndpoint(ENDPOINT_SUCCESS);
+    }
+
+    public String getRedirectEndpoint() {
+        return getEndpoint(ENDPOINT_REDIRECT);
+    }
+
+    // util
+    
+    private String getEndpoint(String endpoint) {
         if (this.server == null) {
             throw new CallbackServerException("Server isn't running, cannot request endpoint");
         }
-        return String.format("http://%s:%d%s", HOSTNAME, this.server.getAddress().getPort(), ENDPOINT_SUCCESS);
+        return String.format("http://%s:%d%s", HOSTNAME, this.server.getAddress().getPort(), endpoint);
     }
 }

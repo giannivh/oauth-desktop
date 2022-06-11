@@ -6,11 +6,14 @@ import com.giannivanhoecke.oauth.desktop.io.remote.RemoteResource;
 import com.giannivanhoecke.oauth.desktop.io.remote.RequestParameters;
 import com.giannivanhoecke.oauth.desktop.io.remote.ResourceException;
 import com.giannivanhoecke.oauth.desktop.representation.internal.AuthorizationCodeResponse;
+import org.apache.commons.codec.binary.Base64;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -59,6 +62,29 @@ public class CallbackServerTest {
         GetRequest getRequest = new GetRequest(RequestParameters
                 .newBuilder()
                 .withEndpoint(callbackEndpoint)
+                .build());
+
+        // when
+        GetResult getResult = new RemoteResource().get(getRequest);
+
+        // then
+        assertThat(getResult, is(not(equalTo(null))));
+        assertThat(getResult.getResultCode(), is(equalTo(200)));
+        assertThat(this.authorizationCodeResponse, is(not(equalTo(null))));
+        assertThat(this.authorizationCodeResponse.getState(), is(equalTo("my-state")));
+        assertThat(this.authorizationCodeResponse.getCode(), is(equalTo("my-code")));
+    }
+
+    @Test
+    public void redirect()
+            throws ResourceException {
+        // given
+        String url = String.format("%s?state=my-state&code=my-code", this.callbackServer.getSuccessEndpoint());
+        String encodedUrl = Base64.encodeBase64URLSafeString(url.getBytes(StandardCharsets.UTF_8));
+        String redirectEndpoint = String.format("%s?to=%s", this.callbackServer.getRedirectEndpoint(), encodedUrl);
+        GetRequest getRequest = new GetRequest(RequestParameters
+                .newBuilder()
+                .withEndpoint(redirectEndpoint)
                 .build());
 
         // when

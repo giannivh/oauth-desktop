@@ -27,6 +27,7 @@ import com.giannivanhoecke.oauth.desktop.representation.internal.GrantType;
 import com.giannivanhoecke.oauth.desktop.system.Browser;
 import com.giannivanhoecke.oauth.desktop.system.DefaultBrowser;
 import com.google.gson.Gson;
+import org.apache.commons.codec.binary.Base64;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -100,7 +101,10 @@ public class AuthorizationCodeFlowWithPkce {
                 "&redirect_uri=" + redirectUri +
                 "&scope=" + uriEncode(this.authorizationServerConfig.getAuthScope()) +
                 "&state=" + state;
-        this.browser.open(authzUrl);
+        String url = this.callbackServer.getRedirectEndpoint()
+                + "?to="
+                + Base64.encodeBase64URLSafeString(authzUrl.getBytes(StandardCharsets.UTF_8));
+        this.browser.open(url);
         return accessTokenResponseCompletableFuture;
     }
 
